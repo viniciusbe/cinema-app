@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "nome": "O Poderoso Chefão",
+    "duração": 175,
+    "sinopse": "A saga da família Corleone em meio ao submundo do crime organizado.",
+    "classificacao": "18+",
+    "diretor": "Francis Ford Coppola",
+    "generos": ["Drama", "Crime"],
+    "poster": "https://media-cache.cinematerial.com/p/500x/1suyyfwy/the-godfather-movie-poster.jpg?v=1456733600"
+  },
+  {
+    "id": 2,
+    "nome": "Interestelar",
+    "duração": 169,
+    "sinopse": "Uma equipe de astronautas viaja através de um buraco de minhoca em busca de um novo lar para a humanidade.",
+    "classificacao": "12+",
+    "diretor": "Christopher Nolan",
+    "generos": ["Ficção Científica", "Aventura"],
+    "poster": "https://media-cache.cinematerial.com/p/500x/ctpnz4mq/interstellar-movie-poster.jpg?v=1456424450"
+  },
+  {
+    "id": 3,
+    "nome": "Pantera Negra",
+    "duração": 134,
+    "sinopse": "T'Challa retorna a Wakanda para assumir o trono como Pantera Negra, mas enfrenta desafios internos e externos.",
+    "classificacao": "12+",
+    "diretor": "Ryan Coogler",
+    "generos": ["Ação", "Aventura"],
+    "poster": "https://image.tmdb.org/t/p/original/fj7sX7w0MfIxWylcizp5ArPIMFs.jpg"
+  },
+  {
+    "id": 4,
+    "nome": "A Origem",
+    "duração": 148,
+    "sinopse": "Um ladrão invade a mente das pessoas para roubar segredos em um mundo de espionagem corporativa.",
+    "classificacao": "14+",
+    "diretor": "Christopher Nolan",
+    "generos": ["Ficção Científica", "Ação"],
+    "poster": "https://vejasp.abril.com.br/wp-content/uploads/2016/12/a-origem-poster.jpg"
+  },
+  {
+    "id": 5,
+    "nome": "A Origem",
+    "duração": 148,
+    "sinopse": "Um ladrão invade a mente das pessoas para roubar segredos em um mundo de espionagem corporativa.",
+    "classificacao": "14+",
+    "diretor": "Christopher Nolan",
+    "generos": ["Ficção Científica", "Ação"],
+    "poster": "https://vejasp.abril.com.br/wp-content/uploads/2016/12/a-origem-poster.jpg"
+  },
+  {
+    "id": 6,
+    "nome": "A Origem",
+    "duração": 148,
+    "sinopse": "Um ladrão invade a mente das pessoas para roubar segredos em um mundo de espionagem corporativa.",
+    "classificacao": "14+",
+    "diretor": "Christopher Nolan",
+    "generos": ["Ficção Científica", "Ação"],
+    "poster": "https://vejasp.abril.com.br/wp-content/uploads/2016/12/a-origem-poster.jpg"
+  }
+]
