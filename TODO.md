@@ -1,0 +1,18 @@
+- [ ] Autorização
+  - [ ] Cliente
+  - [ ] Funcionário
+- [ ] Autenticação
+
+- [ ] Filmes
+  - [ ] Listagem
+  - [ ] Edição
+- [ ] Sessões
+  - [ ] Listagem
+  - [ ] Criação
+  - [ ] Edição
+  - [ ] Exclusão
+- [ ] Ingressos
+  - [ ] Listagem
+  - [ ] Criação
+  - [ ] Edição
+  - [ ] Exclusão
