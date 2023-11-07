@@ -1,12 +1,11 @@
 <template>
-  <div class="flex flex-col max-w-5xl mx-auto justify-center gap-4">
-    <div>
-      <h1>Filmes</h1>
-    </div>
-    <div class="flex flex-row gap-4 flex-wrap">
-      <div v-for="movie in movies" :key="movie.id">
-        <MovieCard :movie="movie" />
-      </div>
+  <div class="flex gap-8">
+    <h1 class="text-xl">Filmes</h1>
+    <UButton icon="i-heroicons-plus" square />
+  </div>
+  <div class="flex flex-row gap-4 flex-wrap">
+    <div v-for="movie in movies" :key="movie.id">
+      <MovieCard :movie="movie" />
     </div>
   </div>
 </template>

@@ -1,40 +1,41 @@
 <template>
-  <div class="flex flex-col max-w-5xl mx-auto justify-center gap-4">
-    <h1 class="text-xl">{{ movie.nome }}</h1>
-    <p>{{ movie.sinopse }}</p>
+  <h1 class="text-xl">{{ movie.nome }}</h1>
+  <p>{{ movie.sinopse }}</p>
 
-    <UTabs :items="items">
-      <template #item="{ item }">
-        <UCard>
+  <UTabs :items="items">
+    <template #item="{ item }">
+      <UCard>
+        <div class="flex flex-col gap-4">
           <div class="flex flex-col gap-4">
-            <div class="flex flex-col gap-4">
+            <div class="flex justify-between">
               <UBadge size="md" class="w-fit">Dublado</UBadge>
-              <div class="flex flex-row gap-2">
-                <UButton
-                  size="xl"
-                  variant="outline"
-                  v-for="time in item.times.dubbed"
-                  >{{ time }}</UButton
-                >
-              </div>
+              <UButton icon="i-heroicons-plus" square />
             </div>
-            <UDivider />
-            <div class="flex flex-col gap-4">
-              <UBadge size="md" class="w-fit">Legendado</UBadge>
-              <div class="flex flex-row gap-2">
-                <UButton
-                  size="xl"
-                  variant="outline"
-                  v-for="time in item.times.subtitled"
-                  >{{ time }}</UButton
-                >
-              </div>
+            <div class="flex flex-row gap-2">
+              <UButton
+                size="xl"
+                variant="outline"
+                v-for="time in item.times.dubbed"
+                >{{ time }}</UButton
+              >
             </div>
           </div>
-        </UCard>
-      </template>
-    </UTabs>
-  </div>
+          <UDivider />
+          <div class="flex flex-col gap-4">
+            <UBadge size="md" class="w-fit">Legendado</UBadge>
+            <div class="flex flex-row gap-2">
+              <UButton
+                size="xl"
+                variant="outline"
+                v-for="time in item.times.subtitled"
+                >{{ time }}</UButton
+              >
+            </div>
+          </div>
+        </div>
+      </UCard>
+    </template>
+  </UTabs>
 </template>
 
 <script setup>

@@ -2,10 +2,13 @@
   <div class="flex justify-between p-8">
     <h1 class="text-xl">Ingressos</h1>
     <div class="flex flex-row gap-2">
-      <UButton variant="soft" to="teste">Entrar</UButton>
+      <UButton variant="soft">Entrar</UButton>
       <UButton variant="ghost">Cadastrar</UButton>
+      <UButton variant="ghost" to="/client">Clientes</UButton>
     </div>
   </div>
   <UDivider class="mb-8" />
-  <NuxtPage />
+  <div class="flex flex-col max-w-5xl mx-auto justify-center gap-4">
+    <NuxtPage />
+  </div>
 </template>
