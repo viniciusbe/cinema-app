@@ -1,45 +1,34 @@
 <template>
   <h1 class="text-xl">Clientes</h1>
-  <UTable :rows="people" />
+  <UCard>
+    <UTable :rows="buyers!" :columns="columns" @select="select" />
+  </UCard>
 </template>
 
-<script setup>
-const people = [
+<script setup lang="ts">
+const { data: buyers } = await useFetch<Buyer[]>(
+  `http://localhost:3000/buyers`,
+  { watch: [] }
+);
+
+const router = useRouter();
+
+const columns = [
   {
-    id: 1,
-    nome: "João",
-    documento: "123456789",
-    email: "joao@email.com",
+    key: "ID",
+    label: "Id",
   },
   {
-    id: 2,
-    nome: "Maria",
-    documento: "987654321",
-    email: "maria@email.com",
+    key: "name",
+    label: "Nome",
   },
   {
-    id: 3,
-    nome: "Pedro",
-    documento: "456789123",
-    email: "pedro@email.com",
-  },
-  {
-    id: 4,
-    nome: "Ana",
-    documento: "654321987",
-    email: "ana@email.com",
-  },
-  {
-    id: 5,
-    nome: "Lucas",
-    documento: "789123456",
-    email: "lucas@email.com",
-  },
-  {
-    id: 6,
-    nome: "Lara",
-    documento: "321654789",
-    email: "lara@email.com",
+    key: "document",
+    label: "Documento",
   },
 ];
+
+function select(row: any) {
+  router.push(`/customer/${row.ID}`);
+}
 </script>

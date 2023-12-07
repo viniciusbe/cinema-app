@@ -1,10 +1,10 @@
 <template>
   <div class="flex justify-between p-8">
-    <h1 class="text-xl">Ingressos</h1>
+    <NuxtLink to="/"> <h1 class="text-xl">Ingressos</h1></NuxtLink>
     <div class="flex flex-row gap-2">
       <UButton variant="soft">Entrar</UButton>
       <UButton variant="ghost">Cadastrar</UButton>
-      <UButton variant="ghost" to="/client">Clientes</UButton>
+      <UButton variant="ghost" to="/customer">Clientes</UButton>
     </div>
   </div>
   <UDivider class="mb-8" />

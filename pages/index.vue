@@ -21,7 +21,7 @@
       </template>
 
       <UForm
-        :validate="validate"
+        :schema="movieSchema"
         :state="state"
         class="space-y-4"
         @submit="onSubmit"
@@ -30,32 +30,38 @@
           <UInput v-model="state.name" />
         </UFormGroup>
 
-        <UFormGroup label="Duração em minutos" name="duration">
-          <UInput v-model="state.duration" type="number" />
+        <UFormGroup label="URL do poster" name="poster">
+          <UInput v-model="state.poster" />
         </UFormGroup>
 
         <UFormGroup label="Sinopse" name="synopsis">
           <UInput v-model="state.synopsis" />
         </UFormGroup>
 
+        <UFormGroup label="Duração em minutos" name="duration">
+          <UInput v-model.number="state.duration" type="number" />
+        </UFormGroup>
+
         <UFormGroup label="Classificação indicativa" name="age">
-          <UInput v-model="state.age" type="number" />
+          <UInput v-model.number="state.age" type="number" />
         </UFormGroup>
 
         <UFormGroup label="Diretor" name="director">
           <USelectMenu
             v-model="state.director"
-            :options="options.directors"
+            :options="options?.directors || []"
             option-attribute="name"
+            :loading="pending"
           />
         </UFormGroup>
 
         <UFormGroup label="Gêneros" name="genders">
           <USelectMenu
             v-model="state.genders"
-            :options="options.genders"
+            :options="options?.genders || []"
             option-attribute="description"
             multiple
+            :loading="pending"
           />
         </UFormGroup>
 
@@ -68,66 +74,71 @@
   </UModal>
 </template>
 
-<script setup>
-const { data: movies } = await useFetch("http://localhost:3000/films", {
-  server: false,
-});
-const { data: options } = await useFetch(
+<script setup lang="ts">
+import type { FormSubmitEvent } from "#ui/types";
+import { array, number, object, string, type InferType } from "yup";
+
+const { data: movies } = await useFetch<Movie[]>("http://localhost:3000/films");
+const { data: options, pending } = await useFetch<MovieOptions>(
   "http://localhost:3000/films/options",
   { server: false }
 );
 
+const toast = useToast();
+const isOpen = ref(false);
 const isCreating = ref(false);
 
 const toggleIsCreating = () => {
   isCreating.value = !isCreating.value;
 };
 
-console.log(options);
-const isOpen = ref(false);
-
-const state = reactive({
-  name: undefined,
+const state: Movie = reactive({
+  name: "",
+  poster: "",
   duration: undefined,
-  synopsis: undefined,
+  synopsis: "",
   age: undefined,
   director: undefined,
   genders: [],
 });
 
-const validate = (state) => {
-  const errors = [];
-  // if (!state.name) errors.push({ path: "name", message: "Required" });
-  // if (!state.duration) errors.push({ path: "duration", message: "Required" });
-  // if (!state.synopsis) errors.push({ path: "synopsis", message: "Required" });
-  // if (!state.age) errors.push({ path: "age", message: "Required" });
-  // if (!state.director) errors.push({ path: "director", message: "Required" });
+const gendersSchema = object({
+  id: string(),
+  description: string(),
+});
 
-  // if (state.genders.length === 0)
-  //   errors.push({ path: "genders", message: "Informe ao menos um gênero" });
+const movieSchema = object({
+  name: string().required("Informe do nome"),
+  poster: string().required("Informe a URL do poster").url("URL inválida"),
+  duration: number()
+    .required("Informe a duração do filme")
+    .positive("Duração não pode ser menos que 0"),
+  synopsis: string().required("Informe a sinopse"),
+  age: number().required("Informe a classificação").min(0).max(18),
+  director: object().required("Selecione o diretor"),
+  genders: array(gendersSchema).min(1, "Selecione ao menos um gênero"),
+});
 
-  return errors;
-};
+type Schema = InferType<typeof movieSchema>;
 
-async function onSubmit(event) {
+async function onSubmit(event: FormSubmitEvent<Schema>) {
   toggleIsCreating();
 
-  const { data: newFilm, status } = await useFetch(
-    "http://localhost:3000/films",
-    {
-      server: false,
-      method: "post",
-      body: event.data,
-    }
-  );
+  const { status } = await useFetch("http://localhost:3000/films", {
+    server: false,
+    method: "post",
+    body: event.data,
+  });
 
   toggleIsCreating();
 
   if (status.value === "success") {
     isOpen.value = false;
+    toast.add({ title: "Filme criado com sucesso!" });
   }
 
   if (status.value === "error") {
+    toast.add({ title: "Erro ao criar filme", color: "red" });
   }
 }
 </script>

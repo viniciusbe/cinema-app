@@ -1,10 +1,10 @@
 <template>
-  <h1 class="text-xl">Cliente João</h1>
+  <h1 class="text-xl">Detalhes de {{ buyer?.name }}</h1>
   <UCard>
     <h1 class="mb-4">Dados</h1>
     <UForm
       :state="state"
-      :validate="validate"
+      :schema="buyerSchema"
       @submit="onSubmit"
       class="flex flex-col gap-2"
     >
@@ -25,13 +25,14 @@
         </UFormGroup>
       </div>
       <div class="flex justify-end gap-2 mt-2">
-        <UButton variant="ghost">Cancelar</UButton>
+        <UButton variant="ghost" @click="routeBack">Cancelar</UButton>
         <UButton variant="soft" type="submit">Salvar</UButton>
       </div>
     </UForm>
   </UCard>
   <UCard>
-    <h1 class="mb-4">Ingressos</h1>
+    <UTable :rows="rows!" />
+    <!-- <h1 class="mb-4">Ingressos</h1>
     <div class="flex flex-col gap-2">
       <div class="flex">
         <div class="w-16 h-24">
@@ -52,29 +53,79 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
   </UCard>
 </template>
 
-<script setup>
-const state = reactive({
-  name: undefined,
-  document: undefined,
-  email: undefined,
-  password: undefined,
+<script setup lang="ts">
+import type { FormSubmitEvent } from "@nuxt/ui/dist/runtime/types";
+import dayjs from "dayjs";
+import { object, string, type InferType } from "yup";
+
+const buyerId = useRoute().params.id;
+const router = useRouter();
+const { data: buyer } = await useFetch<BuyerDetails>(
+  `http://localhost:3000/buyers/${buyerId}`
+);
+
+const toast = useToast();
+const isCreating = ref(false);
+
+const rows = computed(() => {
+  if (!buyer?.value) return [];
+
+  return buyer.value.tickets.map((ticket) => ({
+    id: ticket.ID,
+    assento: ticket.seat,
+    modalidade: ticket.modality,
+    horário: dayjs(ticket.session.time).format("DD/MMM HH:mm"),
+  }));
 });
 
-const validate = (state) => {
-  const errors = [];
-  if (!state.email)
-    errors.push({ path: "email", message: "Campo obrigatório" });
-  if (!state.password)
-    errors.push({ path: "password", message: "Campo obrigatório" });
-  return errors;
+const toggleIsEditing = () => {
+  isCreating.value = !isCreating.value;
 };
 
-async function onSubmit(event) {
-  // Do something with data
-  console.log(event.data);
+const routeBack = () => {
+  router.back();
+};
+
+const state: Buyer = reactive({
+  name: buyer.value?.name,
+  document: buyer.value?.document,
+  email: buyer.value?.email,
+  password: buyer.value?.password,
+});
+
+const buyerSchema = object({
+  name: string().required("Informe do nome"),
+  document: string().required("Informe o documento"),
+  email: string().required("Informe o e-mail").email("Email inválido"),
+  password: string()
+    .required("Informe a senha")
+    .min(6, "A senha deve ter no mínimo 6 caracteres"),
+});
+
+type Schema = InferType<typeof buyerSchema>;
+
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  toggleIsEditing();
+
+  const { status } = await useFetch(`http://localhost:3000/buyers/${buyerId}`, {
+    server: false,
+    method: "put",
+    body: event.data,
+  });
+
+  toggleIsEditing();
+
+  if (status.value === "success") {
+    router.push("/customer");
+    toast.add({ title: "Cliente editado com sucesso!" });
+  }
+
+  if (status.value === "error") {
+    toast.add({ title: "Erro ao editar cliente", color: "red" });
+  }
 }
 </script>
